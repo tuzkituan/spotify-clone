@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import Auth from 'components/Auth';
 import Fonts from 'fonts/index.js';
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
@@ -10,14 +11,10 @@ import theme from '../themes';
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider theme={theme}>
-      <NextNProgress
-        color="#ff5414"
-        showOnShallow={true}
-        options={{
-          showSpinner: false,
-        }}
-      />
-      <Component {...pageProps} />
+      <Auth>
+        <NextNProgress color="#ff5414" showOnShallow={true} />
+        <Component {...pageProps} />
+      </Auth>
     </ChakraProvider>
   );
 };
@@ -26,6 +23,7 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <Fonts />
+
       <App {...props} />
     </Provider>
   );

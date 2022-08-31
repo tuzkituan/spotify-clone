@@ -1,21 +1,17 @@
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
-  ArrowLeftIcon,
   TriangleUpIcon,
 } from '@chakra-ui/icons';
 import {
-  Avatar,
   Box,
   Button,
   Center,
   Flex,
   IconButton,
   Image,
-  Input,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuGroup,
   MenuItem,
   MenuList,
@@ -23,8 +19,20 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { getMe, logout } from 'store/actions/userSlice';
+import { useAppDispatch } from 'store/hooks';
 
 const Header: FC = () => {
+  const user = useSelector(getMe);
+  const dispatch = useAppDispatch();
+
+  const onLogout = () => {
+    window.localStorage.removeItem('token');
+    dispatch(logout);
+    window.location.reload();
+  };
+
   return (
     <Flex gap={4} paddingBlock={4} paddingInline={8}>
       <Center>
@@ -57,6 +65,7 @@ const Header: FC = () => {
         </Text>
       </Center>
       <Spacer />
+
       <Center>
         <Menu>
           <MenuButton
@@ -67,26 +76,17 @@ const Header: FC = () => {
           >
             <Flex alignItems="center" gap={2} paddingRight="16px">
               <Box boxSize={10}>
-                <Image
-                  src="https://avatars.githubusercontent.com/u/8108337"
-                  alt=""
-                  borderRadius="50%"
-                />
+                <Image src={user?.images?.[0]?.url} alt="" borderRadius="50%" />
               </Box>
               <Text fontWeight="700" letterSpacing={1}>
-                Lewis Nguyen
+                {user?.display_name}
               </Text>
             </Flex>
           </MenuButton>
           <MenuList>
-            <MenuGroup title="Profile">
-              <MenuItem>My Account</MenuItem>
-              <MenuItem>Payments </MenuItem>
-            </MenuGroup>
-            <MenuDivider />
-            <MenuGroup title="Help">
-              <MenuItem>Docs</MenuItem>
-              <MenuItem>FAQ</MenuItem>
+            <MenuGroup title={user?.product}>
+              <MenuItem>{user?.email}</MenuItem>
+              <MenuItem onClick={onLogout}>Log out</MenuItem>
             </MenuGroup>
           </MenuList>
         </Menu>

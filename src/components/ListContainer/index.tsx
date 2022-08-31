@@ -3,110 +3,32 @@ import {
   Flex,
   Image,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
   Text,
-  Tfoot,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { FC } from 'react';
+import { fetchSongs, getSongs } from 'store/actions/songsSlice';
+import { getToken } from 'store/actions/userSlice';
+import { FC, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from 'store/hooks';
+import { convertSecondsToHHmmss } from 'utils/time';
+import { convertDateAgo } from 'utils/dates';
 
 const ListContainer: FC = () => {
-  const data = [
-    {
-      id: 1,
-      title: 'In Your Eyes',
-      author: 'The Weekend',
-      album: 'After Hours',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-      image: 'https://i.ytimg.com/vi/kxgj5af8zg4/maxresdefault.jpg',
-    },
-    {
-      id: 2,
-      title: 'Breathless',
-      author: 'Shayne Ward',
-      album: 'Breathless (Expanded Edition)',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-    {
-      id: 2,
-      title: 'Breathless',
-      author: 'Shayne Ward',
-      album: 'Breathless (Expanded Edition)',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-    {
-      id: 1,
-      title: 'In Your Eyes',
-      author: 'The Weekend',
-      album: 'After Hours',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-    {
-      id: 2,
-      title: 'Breathless',
-      author: 'Shayne Ward',
-      album: 'Breathless (Expanded Edition)',
-      songLength: '3:58',
-      dateAdded: '15 days ago',
-    },
-    {
-      id: 1,
-      title: 'In Your Eyes',
-      author: 'The Weekend',
-      album: 'After Hours',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-    {
-      id: 2,
-      title: 'Breathless',
-      author: 'Shayne Ward',
-      album: 'Breathless (Expanded Edition)',
-      songLength: '3:58',
-      dateAdded: '15 days ago',
-    },
-    {
-      id: 2,
-      title: 'Breathless',
-      author: 'Shayne Ward',
-      album: 'Breathless (Expanded Edition)',
-      songLength: '3:58',
-      dateAdded: '15 days ago',
-    },
-    {
-      id: 1,
-      title: 'In Your Eyes',
-      author: 'The Weekend',
-      album: 'After Hours',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-    {
-      id: 1,
-      title: 'In Your Eyes',
-      author: 'The Weekend',
-      album: 'After Hours',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-    {
-      id: 2,
-      title: 'Breathless',
-      author: 'Shayne Ward',
-      album: 'Breathless (Expanded Edition)',
-      dateAdded: '15 days ago',
-      songLength: '3:58',
-    },
-  ];
+  const token = useSelector(getToken);
+  const dispatch = useAppDispatch();
+  const data = useSelector(getSongs);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchSongs());
+    }
+  }, [token, dispatch]);
 
   return (
     <Flex padding={8} overflowY="auto" height="100%" w="100%">
@@ -125,7 +47,10 @@ const ListContainer: FC = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((item, index) => {
+            {data?.map((item: any, index: number) => {
+              const artists = item.track?.artists
+                ?.map((x: any) => x.name)
+                ?.join(', ');
               return (
                 <Tr
                   key={index}
@@ -139,7 +64,7 @@ const ListContainer: FC = () => {
                     <Flex gap={4} alignItems="center">
                       <Image
                         src={
-                          item.image ||
+                          item.track?.album?.images?.[0]?.url ||
                           'https://i.ytimg.com/vi/kxgj5af8zg4/maxresdefault.jpg'
                         }
                         w="36px"
@@ -147,12 +72,19 @@ const ListContainer: FC = () => {
                         alt=""
                         objectFit="cover"
                       />
-                      <Text fontWeight="bold">{item.title}</Text>
+                      <Flex direction="column" gap={2}>
+                        <Text fontWeight="bold">{item.track?.name}</Text>
+                        <Text color="gray.500" fontSize="12px">
+                          {artists}
+                        </Text>
+                      </Flex>
                     </Flex>
                   </Td>
-                  <Td color="gray">{item.album}</Td>
-                  <Td color="gray">{item.dateAdded}</Td>
-                  <Td color="gray">{item.songLength}</Td>
+                  <Td color="gray">{item.track?.album?.name}</Td>
+                  <Td color="gray">{convertDateAgo(item.added_at)}</Td>
+                  <Td color="gray">
+                    {convertSecondsToHHmmss(item.track.duration_ms)}
+                  </Td>
                 </Tr>
               );
             })}
