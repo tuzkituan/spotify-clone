@@ -1,7 +1,10 @@
 export const CLIENT_ID = '443c34aba10142a9bfb0c535a50e54a2';
 export const CLIENT_SECRET = '7e95565efcd045caabbcedcf69d4efb6';
 
-export const REDIRECT_URI = 'http://localhost:3000';
+export const REDIRECT_URI =
+  typeof window !== 'undefined'
+    ? window.location.origin
+    : 'https://spotify-clone-tuzkituan.vercel.app';
 
 export const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
 export const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
