@@ -4,7 +4,7 @@ const colors = {
   // mainBackgroundColor: '#dae0e6',
   // textColor: '#000',
 
-  primaryColor: '#ff5414',
+  primaryColor: '#1fdf64',
 
   borderColorLight: '#cccccc',
   borderColorDark: '#343536',
