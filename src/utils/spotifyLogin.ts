@@ -4,7 +4,7 @@ export const CLIENT_SECRET = '7e95565efcd045caabbcedcf69d4efb6';
 export const REDIRECT_URI =
   typeof window !== 'undefined'
     ? window.location.origin
-    : 'https://spotify-clone-tuzkituan.vercel.app';
+    : 'https://spotify-lewis.vercel.app';
 
 export const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
 export const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
