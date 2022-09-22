@@ -1,5 +1,5 @@
-export const CLIENT_ID = '443c34aba10142a9bfb0c535a50e54a2';
-export const CLIENT_SECRET = '7e95565efcd045caabbcedcf69d4efb6';
+export const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
+export const CLIENT_SECRET = process.env.NEXT_PUBLIC_CLIENT_SECRET;
 
 export const REDIRECT_URI =
   typeof window !== 'undefined'

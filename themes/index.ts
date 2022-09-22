@@ -22,10 +22,10 @@ const overrides = {
 
   // color variables
   colors,
-  fonts: {
-    heading: `'Noto Sans', sans-serif`,
-    body: `'Noto Sans', sans-serif`,
-  },
+  // fonts: {
+  //   heading: `'Noto Sans', sans-serif`,
+  //   body: `'Noto Sans', sans-serif`,
+  // },
   config: {
     initialColorMode: 'dark',
     useSystemColorMode: false,
